@@ -13,6 +13,18 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group([
+    'namespace' => 'Auth'
+        ], function () {
+#Login
+    Route::post('auth/login', 'AuthController@login');
+#Temp Sign Up
+    Route::post('auth/signup', 'AuthController@signup');
+
+    Route::group([
+        'middleware' => ['auth:api', 'dyna_connect']
+            ], function() {
+#Logout
+        Route::get('auth/logout', 'AuthController@logout');
+		});
 });
